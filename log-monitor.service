@@ -1,0 +1,28 @@
+[Unit]
+Description=Kibana Log Monitor
+Documentation=https://github.com/ISISScientificComputing/kibana-log-monitor
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Environment=ES_HOME=/usr/share/elasticsearch
+Environment="COMMAND=--command='/kibana-log-monitor/log-monitor.py'"
+Environment="ARGS=-W"
+Environment="FILE_TO_MONITOR=/var/log/kibana/kibana.log"
+
+WorkingDirectory=/kibana-log-monitor
+
+ExecStart=/usr/local/bin/watchmedo shell-command $COMMAND $ARGS $FILE_TO_MONITOR
+
+StandardOutput=journal
+StandardError=inherit
+
+# SIGTERM signal is used to stop the Java process
+KillSignal=SIGTERM
+
+KillMode=process
+
+SendSIGKILL=no
+
+[Install]
+WantedBy=multi-user.target
