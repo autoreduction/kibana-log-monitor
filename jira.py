@@ -14,7 +14,7 @@ SERVICES = {
         }
     },
     "TAG:REDUCESTATIC": {
-        "name": "reduce.isis.cclrc.ac.uk",
+        "name": "reduce.isis.cclrc.ac.uk static files",
         "link": "https://reduce.isis.cclrc.ac.uk/kibana/app/uptime",
         "jira_field": {
             "id":
