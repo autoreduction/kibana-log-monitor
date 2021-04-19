@@ -45,10 +45,10 @@ def send(message: str):
 
     print("GET", json.dumps(json.loads(response.text), sort_keys=True))
 
-    if "TAG:REDUCE" in message:
-        tag = "TAG:REDUCE"
-    elif "TAG:REDUCESTATIC" in message:
+    if "TAG:REDUCESTATIC" in message:
         tag = "TAG:REDUCESTATIC"
+    elif "TAG:REDUCE" in message:
+        tag = "TAG:REDUCE"
     else:
         tag = "OTHER"
 
