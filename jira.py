@@ -6,12 +6,25 @@ import json
 
 SERVICES = {
     "TAG:REDUCE": {
-        "id":
-        "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/27d089ca-a0fd-11eb-be7a-128b42819424"
+        "name": "reduce.isis.cclrc.ac.uk",
+        "link": "https://reduce.isis.cclrc.ac.uk/kibana/app/uptime",
+        "jira_field": {
+            "id":
+            "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/27d089ca-a0fd-11eb-be7a-128b42819424"
+        }
     },
     "TAG:REDUCESTATIC": {
-        "id":
-        "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/53493872-a0fd-11eb-9efb-128b42819424"
+        "name": "reduce.isis.cclrc.ac.uk",
+        "link": "https://reduce.isis.cclrc.ac.uk/kibana/app/uptime",
+        "jira_field": {
+            "id":
+            "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/53493872-a0fd-11eb-9efb-128b42819424"
+        }
+    },
+    "OTHER": {
+        "name": "unknown service",
+        "link": "https://reduce.isis.cclrc.ac.uk/kibana/app/uptime",
+        "jira_field": ""
     }
 }
 
@@ -30,34 +43,26 @@ def send(message: str):
         headers=HEADERS,
         auth=AUTH)
 
-    print(
-        "GET",
-        json.dumps(json.loads(response.text),
-                   sort_keys=True,
-                   indent=4,
-                   separators=(",", ": ")))
+    print("GET", json.dumps(json.loads(response.text), sort_keys=True))
 
     if "TAG:REDUCE" in message:
-        name, service = "reduce.isis.cclrc.ac.uk", SERVICES["TAG:REDUCE"]
+        tag = "TAG:REDUCE"
+    elif "TAG:REDUCESTATIC" in message:
+        tag = "TAG:REDUCESTATIC"
     else:
-        name, service = "reduce.isis.cclrc.ac.uk static files", SERVICES[
-            "TAG:REDUCESTATIC"]
+        tag = "OTHER"
 
     payload = {
         "serviceDeskId": "1",
         "requestTypeId": "12",
         "requestFieldValues": {
-            "summary": name,
-            "description": "A server log triggered this incident.",
-            "customfield_10036": [service]
+            "summary": f"Disruption of {SERVICES[tag]['name']}",
+            "description":
+            f"A server log triggered this incident. Check {SERVICES[tag]['link']} for more info",
+            "customfield_10036": [SERVICES[tag]['jira_field']]
         },
     }
 
     response = requests.post(URL, json=payload, headers=HEADERS, auth=AUTH)
 
-    print(
-        "POST",
-        json.dumps(json.loads(response.text),
-                   sort_keys=True,
-                   indent=4,
-                   separators=(",", ": ")))
+    print("POST", json.dumps(json.loads(response.text), sort_keys=True))
