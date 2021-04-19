@@ -4,75 +4,60 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 
-url = "https://autoreduce.atlassian.net/rest/api/3/issue"
-
-auth = HTTPBasicAuth("email", "api token")
-
-headers = {
-   "Accept": "application/json",
-   "Content-Type": "application/json"
-}
-response = requests.get("https://autoreduce.atlassian.net/rest/auth/latest/session",
-   headers=headers,
-   auth=auth
-)
-print("GET", json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
-
-payload = {
-  "update": {},
-  "fields": {
-    "summary": "Main order flow broken",
-    # "parent": {
-    #   "key": "ARS"
-    # },
-    "issuetype": {
-      "id": "10001"
+SERVICES = {
+    "TAG:REDUCE": {
+        "id":
+        "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/27d089ca-a0fd-11eb-be7a-128b42819424"
     },
-    "project": {
-      "id": "10000"
-    },
-    # "description": {
-    #   "type": "doc",
-    #   "version": 1,
-    #   "content": [
-    #     {
-    #       "type": "paragraph",
-    #       "content": [
-    #         {
-    #           "text": "Order entry fails when selecting supplier.",
-    #           "type": "text"
-    #         }
-    #       ]
-    #     }
-    #   ]
-    # },
-    # "environment": {
-    #   "type": "doc",
-    #   "version": 1,
-    #   "content": [
-    #     {
-    #       "type": "paragraph",
-    #       "content": [
-    #         {
-    #           "text": "UAT",
-    #           "type": "text"
-    #         }
-    #       ]
-    #     }
-    #   ]
-    # },
-    # "versions": [
-    #   {
-    #     "id": "10000"
-    #   }
-    # ],
-  }
+    "TAG:REDUCESTATIC": {
+        "id":
+        "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/53493872-a0fd-11eb-9efb-128b42819424"
+    }
 }
 
-response = requests.post(url,
-   json=payload,
-   headers=headers,
-   auth=auth
-)
+# for help https://developer.atlassian.com/cloud/jira/service-desk/rest/api-group-request
 
-print("POST",json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+URL = "https://autoreduce.atlassian.net/rest/servicedeskapi/request"
+
+AUTH = HTTPBasicAuth("", "")
+
+HEADERS = {"Accept": "application/json", "Content-Type": "application/json"}
+
+
+def send(message: str):
+    response = requests.get(
+        "https://autoreduce.atlassian.net/rest/auth/latest/session",
+        headers=HEADERS,
+        auth=AUTH)
+
+    print(
+        "GET",
+        json.dumps(json.loads(response.text),
+                   sort_keys=True,
+                   indent=4,
+                   separators=(",", ": ")))
+
+    if "TAG:REDUCE" in message:
+        name, service = "reduce.isis.cclrc.ac.uk", SERVICES["TAG:REDUCE"]
+    else:
+        name, service = "reduce.isis.cclrc.ac.uk static files", SERVICES[
+            "TAG:REDUCESTATIC"]
+
+    payload = {
+        "serviceDeskId": "1",
+        "requestTypeId": "12",
+        "requestFieldValues": {
+            "summary": name,
+            "description": "A server log triggered this incident.",
+            "customfield_10036": [service]
+        },
+    }
+
+    response = requests.post(URL, json=payload, headers=HEADERS, auth=AUTH)
+
+    print(
+        "POST",
+        json.dumps(json.loads(response.text),
+                   sort_keys=True,
+                   indent=4,
+                   separators=(",", ": ")))
