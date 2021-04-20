@@ -39,6 +39,15 @@ SERVICES = {
             "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/6a3d6a58-a0fd-11eb-be82-128b42819424"
         }
     },
+    "TAG:ELASTICSEARCHDISK": {
+        "name": "Elasticsearch host node is running low on disk space",
+        "link":
+        r"https://reduce.isis.cclrc.ac.uk/kibana/app/metrics/explorer?metricsExplorer=(chartOptions:(stack:!f,type:line,yAxisMode:fromZero),options:(aggregation:avg,filterQuery:%27host.name:%20%22elasticsearch%22%20%27,metrics:!((aggregation:avg,color:color0,field:system.filesystem.available),(aggregation:avg,color:color1,field:system.filesystem.free)),source:default),timerange:(from:now-10m,interval:%3E%3D10s,to:now))&waffleFilter=(expression:%27%27,kind:kuery)&waffleTime=(currentTime:1618913625590,isAutoReloading:!f)&waffleOptions=(accountId:%27%27,autoBounds:!t,boundsOverride:(max:1,min:0),customMetrics:!(),customOptions:!(),groupBy:!(),legend:(palette:cool,reverseColors:!f,steps:10),metric:(type:cpu),nodeType:host,region:%27%27,sort:(by:name,direction:desc),source:default,view:map)",
+        "jira_field": {
+            "id":
+            "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/af43def6-a1c1-11eb-b065-128b42819424"
+        }
+    },
     "OTHER": {
         "name": "unknown service",
         "link": "https://reduce.isis.cclrc.ac.uk/kibana/app/uptime",
