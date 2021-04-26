@@ -31,8 +31,7 @@ SERVICES = {
         }
     },
     "TAG:QUEUEPROCESSORS": {
-        "name":
-        "Something gone wrong with queue processors (this isn't used yet)",
+        "name": "The number of live ActiveMQ consumers is 0!",
         "link": "https://reduce.isis.cclrc.ac.uk/kibana",
         "jira_field": {
             "id":
@@ -46,6 +45,15 @@ SERVICES = {
         "jira_field": {
             "id":
             "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/af43def6-a1c1-11eb-b065-128b42819424"
+        }
+    },
+    "TAG:DATABASEBACKUP": {
+        "name":
+        "The last database backup did not restore correctly. Check db-backup node.",
+        "link": "",
+        "jira_field": {
+            "id":
+            "ari:cloud:graph::service/b0a0787a-e104-460d-ad03-f976135c8a6a/fbb6a7da-a2a9-11eb-8449-128b42819424"
         }
     },
     "OTHER": {
@@ -92,3 +100,8 @@ def send(message: str):
     response = requests.post(URL, json=payload, headers=HEADERS, auth=AUTH)
 
     print("POST", json.dumps(json.loads(response.text), sort_keys=True))
+
+
+if __name__ == "__main__":
+    import sys
+    send(sys.argv[1])
