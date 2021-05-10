@@ -7,7 +7,16 @@ Each message it processes is uniquely identified by its timestamp and cached in 
 that have been cached will not trigger the action again.
 
 # Install
-This is installed via Ansible, in the `kibana-log-monitor` role. It is run as a service. The URL in the repository is empty, but Ansible replaces the line with the real URL which is stored in the vault.
+This is installed via Ansible, in the `kibana-log-monitor` role. It is run as a service.
+
+# Credentials
+The credentials are passed in as Environment variables. The exact names can be seen in the `.py` files - look for `os.environ[...]`.
+
+## Production
+For production deployment the credentials are set in the `log-monitor.service.j2` file. The file is made a template and configured with the real values during Ansible configuration time.
+
+## Local / development
+Locally, you will likely not be using Ansible, nor the `service.j2` file, so all you need to do is make sure the env vars are set before running the scripts.
 
 # Checking logs
 The service logs to `journalctl`, you can look at the logs with `journalctl -u log-monitor`.

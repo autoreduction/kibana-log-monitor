@@ -9,6 +9,8 @@ Environment=ES_HOME=/usr/share/elasticsearch
 Environment="COMMAND=--command='/kibana-log-monitor/log-monitor.py'"
 Environment="ARGS=-W"
 Environment="FILE_TO_MONITOR=/var/log/kibana/kibana.log"
+Environment="KIBANA_LOG_MONITOR_JIRA_USER={{ vault_jira_username }}"
+Environment="KIBANA_LOG_MONITOR_JIRA_PASSWORD={{ vault_jira_password }}"
 
 WorkingDirectory=/kibana-log-monitor
 

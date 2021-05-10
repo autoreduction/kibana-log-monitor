@@ -1,5 +1,4 @@
-# This code sample uses the 'requests' library:
-# http://docs.python-requests.org
+import os
 import requests
 from requests.auth import HTTPBasicAuth
 import json
@@ -8,7 +7,9 @@ import json
 
 url = "https://autoreduce.atlassian.net/rest/servicedeskapi/request"
 
-auth = HTTPBasicAuth("", "")
+username = os.environ["KIBANA_LOG_MONITOR_JIRA_USER"]
+password = os.environ["KIBANA_LOG_MONITOR_JIRA_PASSWORD"]
+auth = HTTPBasicAuth(username, password)
 
 headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
@@ -26,7 +27,7 @@ print(
                separators=(",", ": ")))
 
 # now auth works properly and we can see the issue data
-response = requests.get(url + "/ARS-26", headers=headers, auth=auth)
+response = requests.get(url + "/ARS-28", headers=headers, auth=auth)
 
 print(
     "GET",

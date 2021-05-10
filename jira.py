@@ -1,5 +1,4 @@
-# This code sample uses the 'requests' library:
-# http://docs.python-requests.org
+import os
 import requests
 from requests.auth import HTTPBasicAuth
 import json
@@ -67,7 +66,9 @@ SERVICES = {
 
 URL = "https://autoreduce.atlassian.net/rest/servicedeskapi/request"
 
-AUTH = HTTPBasicAuth("", "")
+username = os.environ["KIBANA_LOG_MONITOR_JIRA_USER"]
+password = os.environ["KIBANA_LOG_MONITOR_JIRA_PASSWORD"]
+AUTH = HTTPBasicAuth(username, password)
 
 HEADERS = {"Accept": "application/json", "Content-Type": "application/json"}
 
